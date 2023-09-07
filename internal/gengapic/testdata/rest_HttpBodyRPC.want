@@ -32,11 +32,10 @@ func (c *fooRESTClient) HttpBodyRPC(ctx context.Context, req *foopb.Foo, opts ..
 		if settings.Path != "" {
 			baseUrl.Path = settings.Path
 		}
-		httpReq, err := http.NewRequest("POST", baseUrl.String(), bytes.NewReader(jsonReq))
+		httpReq, err := http.NewRequestWithContext(ctx, "POST", baseUrl.String(), bytes.NewReader(jsonReq))
 		if err != nil {
 			return err
 		}
-		httpReq = httpReq.WithContext(ctx)
 		httpReq.Header = headers
 
 		httpRsp, err := c.httpClient.Do(httpReq)
